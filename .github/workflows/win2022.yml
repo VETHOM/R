@@ -31,6 +31,20 @@ jobs:
     - name: Open Tunnel.
       run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp --region ap 3389"'
     - name: Connect to your RDP
-      run: cmd /c start.bat
-    - name: Successfully made! You can close the tab now.
+      run: |
+        cmd /c start.bat
+
+    - name: Create result file
+      run: |
+        echo IP: >> result.txt
+        for /f "tokens=*" %%a in ('findstr /c:"tcp://" start.bat') do echo %%a>>result.txt
+        echo Username: Administrator>>result.txt
+        echo Password: RP_1A!>>result.txt
+
+    - name: Upload result artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: rdp-info
+        path: result.txt
+    - name: Keep RDP alive
       run: cmd /c loop.bat
