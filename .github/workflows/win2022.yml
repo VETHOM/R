@@ -42,7 +42,7 @@ jobs:
         echo Password: RP_1A!>>result.txt
 
     - name: Upload result artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: rdp-info
         path: result.txt
